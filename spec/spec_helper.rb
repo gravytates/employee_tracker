@@ -4,6 +4,7 @@ require('rspec')
 require('pg')
 require('sinatra/activerecord')
 require('department')
+require('employee')
 
 RSpec.configure do |config|
   config.after(:each) do

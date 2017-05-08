@@ -1,0 +1,41 @@
+<h3><em><%= @employee.name %></em></h3>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form action="/employee/update/<%= @employee.id %>" method="post">
+        <input name="_method" type="hidden" value="patch">
+        <label>update name:</label>
+        <input name="employee-name" type="text">
+        <br>
+        <button type="submit" class="btn btn-info" name="button">update employee</button>
+      </form>
+      <br>
+      <form action="/employee/delete/<%= @employee.id %>" method="post">
+        <input name="_method" type="hidden" value="delete">
+        <button type="submit" class="btn btn-warning" name="button">fire employee</button>
+      </form>
+      <br>
+      <a href="/" class="btn btn-success">home</a>
+    </div>
+    <div class="col-md-6">
+      <%= @employee.name %>'s current department: <%= @department %>
+      <% if @departments.any? %>
+        <h3>Add employee to a department</h3>
+
+        <form action="/employee/department/<%= @employee.id %>" method="post">
+          <input type="hidden" name="_method" value="patch">
+            <label>Select a department</label>
+            <br>
+            <select name="department-id" >
+              <% @departments.each do |department| %>
+                <option value="<%= department.id %>"> <%= department.name %> </option>
+              <% end %>
+            </select>
+          <br><br>
+          <button class="btn btn-info" type="submit">assign to department</button>
+        </form>
+      <% end %>
+    </div>
+  </div>
+</div>
