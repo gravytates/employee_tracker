@@ -83,3 +83,7 @@ patch '/employee/department/:id' do
   @departments = Department.all
   erb :employee
 end
+
+get '/project_page' do
+  erb :projects
+end
