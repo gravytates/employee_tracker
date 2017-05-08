@@ -17,7 +17,6 @@ end
 post '/departments/new' do
   name = params.fetch 'department-name'
   department = Department.create({name: name})
-  # id = department.id <---example of grabbing id
   redirect '/'
 end
 
@@ -30,8 +29,7 @@ patch '/department/update/:id' do
   department = Department.find(params.fetch 'id')
   name = params.fetch('department-name')
   department.update({name: name})
-  @department = department
-  erb :department
+  redirect "/departments/#{department.id}"
 end
 
 delete '/department/delete/:id' do
@@ -72,13 +70,7 @@ patch '/employee/department/:id' do
   @employee = Employee.find(params.fetch 'id')
   department = params.fetch 'department-id'
   @employee.update({department_id: department})
-  # @project = @employee.project.name
-  # @projects = Project.all
-  @departments = Department.all
-  @projects = Project.all
-  @department = @employee.department ? @employee.department.name : "none"
-  @project = @employee.project ? @employee.project.name : "none"
-  erb :employee
+  redirect "/employee/#{@employee.id}"
 end
 
 get '/project_page' do
@@ -95,7 +87,6 @@ end
 get '/project/:id' do
   @project = Project.find(params.fetch 'id')
   @employees = Employee.all
-  # @employee = Employee.
   erb :project_details
 end
 
@@ -103,10 +94,7 @@ patch '/project/update/:id' do
   project = Project.find(params.fetch 'id')
   name = params.fetch('project-name')
   project.update({name: name})
-  @project = project
-  @employees = Employee.all
-
-  erb :project_details
+  redirect "/project/#{project.id}"
 end
 
 delete '/project/delete/:id' do
@@ -121,20 +109,12 @@ patch '/project/:id/add_employees' do
   selected_employee_ids.each do |e|
     Employee.find(e).update({project_id: project_id})
   end
-  # @project_employees
-
-  @project = Project.find(params.fetch 'id')
-  @employees = Employee.all
-  erb :project_details
+  redirect "/project/#{project_id}"
 end
 
 patch '/employee/project/:id' do
   @employee = Employee.find(params.fetch 'id')
   project_id = params.fetch 'project-id'
   @employee.update({project_id: project_id})
-  @project = @employee.project.name
-  @department = @employee.department ? @employee.department.name : "none"
-  @projects = Project.all
-  @departments = Department.all
-  erb :employee
+  redirect "/employee/#{@employee.id}"
 end
