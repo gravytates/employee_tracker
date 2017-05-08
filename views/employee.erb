@@ -20,6 +20,8 @@
     </div>
     <div class="col-md-6">
       <%= @employee.name %>'s current department: <%= @department %>
+      <br>
+      <%= @employee.name %>'s current project: <%= @project %>
       <% if @departments.any? %>
         <h3>Add employee to a department</h3>
 
@@ -36,6 +38,8 @@
           <button class="btn btn-info" type="submit">assign to department</button>
         </form>
       <% end %>
+
+
     </div>
   </div>
 </div>

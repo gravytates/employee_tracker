@@ -1,1 +1,16 @@
 <h1>Project Tracker</h1>
+<a href="/" class="btn btn-success">home</a>
+<p>
+  add a project
+</p>
+
+<form class="" action="/project/new" method="post">
+  <label for="name">project name:</label><br>
+  <input type="text" name="project-name" required>
+  <br><br>
+  <button type="submit" class="btn btn-danger" name="button">add project</button>
+</form>
+<br>
+<% @projects.each do |project| %>
+  <li><a href="/project/<%= project.id %>"><%= project.name %></a></li>
+<% end %>

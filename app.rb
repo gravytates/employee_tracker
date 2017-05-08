@@ -3,6 +3,7 @@ require 'sinatra/reloader'
 require 'sinatra/activerecord'
 require './lib/department'
 require './lib/employee'
+require './lib/project'
 require 'pry'
 
 also_reload('lib/**/*.rb')
@@ -17,9 +18,7 @@ post '/departments/new' do
   name = params.fetch 'department-name'
   department = Department.create({name: name})
   # id = department.id <---example of grabbing id
-  @employees = Employee.all
-  @departments = Department.all
-  erb :index
+  redirect '/'
 end
 
 get '/departments/:id' do
@@ -38,22 +37,21 @@ end
 delete '/department/delete/:id' do
   department = Department.find(params.fetch 'id')
   department.delete
-  @employees = Employee.all
-  @departments = Department.all
-  erb :index
+  redirect '/'
 end
 
 post '/employee/new' do
   name = params.fetch 'employee-name'
   Employee.create({name: name})
-  @employees = Employee.all
-  @departments = Department.all
-  erb :index
+  redirect '/'
 end
 
 get '/employee/:id' do
   @employee = Employee.find(params.fetch 'id')
+  @department = @employee.department ? @employee.department.name : "none"
   @departments = Department.all
+  @project = @employee.project ? @employee.project.name : "none"
+  # @projects = Project.all
   erb :employee
 end
 
@@ -61,29 +59,82 @@ patch '/employee/update/:id' do
   employee = Employee.find(params.fetch 'id')
   name = params.fetch('employee-name')
   employee.update({name: name})
-  @employee = employee
-  @departments = Department.all
-  erb :employee
+  redirect "/employee/#{employee.id}"
 end
 
 delete '/employee/delete/:id' do
   employee = Employee.find(params.fetch 'id')
   employee.delete
-  @employees = Employee.all
-  @departments = Department.all
-  erb :index
+  redirect '/'
 end
 
 patch '/employee/department/:id' do
-  employee = Employee.find(params.fetch 'id')
+  @employee = Employee.find(params.fetch 'id')
   department = params.fetch 'department-id'
-  employee.update({department_id: department})
-  @employee = employee
-  @department = employee.department.name
+  @employee.update({department_id: department})
+  # @project = @employee.project.name
+  # @projects = Project.all
   @departments = Department.all
+  @department = @employee.department ? @employee.department.name : "none"
+  @project = @employee.project ? @employee.project.name : "none"
   erb :employee
 end
 
 get '/project_page' do
+  @projects = Project.all
   erb :projects
 end
+
+post '/project/new' do
+  name = params.fetch 'project-name'
+  Project.create({name: name})
+  redirect '/project_page'
+end
+
+get '/project/:id' do
+  @project = Project.find(params.fetch 'id')
+  @employees = Employee.all
+  # @employee = Employee.
+  erb :project_details
+end
+
+patch '/project/update/:id' do
+  project = Project.find(params.fetch 'id')
+  name = params.fetch('project-name')
+  project.update({name: name})
+  @project = project
+  @employees = Employee.all
+
+  erb :project_details
+end
+
+delete '/project/delete/:id' do
+  project = Project.find(params.fetch 'id')
+  project.delete
+  redirect '/project_page'
+end
+
+patch '/project/:id/add_employees' do
+  project_id = params.fetch 'id'
+  selected_employee_ids = params.fetch 'employee_ids'
+  selected_employee_ids.each do |e|
+    Employee.find(e).update({project_id: project_id})
+  end
+  # @project_employees
+
+  @project = Project.find(params.fetch 'id')
+  @employees = Employee.all
+  erb :project_details
+end
+
+# patch '/employee/project/:id' do
+#   @employee = Employee.find(params.fetch 'id')
+#   project = params.fetch 'project-id'
+#   @employee.update({project_id: project})
+#   @project = @employee.project.name
+#   @projects = Project.all
+#   @departments = Department.all
+#   @department = @employee.department.name
+#
+#   erb :employee
+# end
