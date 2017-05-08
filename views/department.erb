@@ -1,0 +1,7 @@
+<h3><em><%= @department.name %></em></h3>
+<br>
+<form action="/department/delete/<%= @department.id %>" method="post">
+  <input name="_method" type="hidden" value="delete">
+  <button type="submit" class="btn btn-warning" name="button">delete department</button>
+</form>
+<a href="/">Home</a>
