@@ -39,6 +39,23 @@
         </form>
       <% end %>
 
+      <% if @projects.any? %>
+        <h3>Add employee to a project</h3>
+
+        <form action="/employee/project/<%= @employee.id %>" method="post">
+          <input type="hidden" name="_method" value="patch">
+            <label>Select a project</label>
+            <br>
+            <select name="project-id" >
+              <% @projects.each do |project| %>
+                <option value="<%= project.id %>"> <%= project.name %> </option>
+              <% end %>
+            </select>
+          <br><br>
+          <button class="btn btn-info" type="submit">assign to project</button>
+        </form>
+      <% end %>
+
 
     </div>
   </div>

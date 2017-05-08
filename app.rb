@@ -51,7 +51,7 @@ get '/employee/:id' do
   @department = @employee.department ? @employee.department.name : "none"
   @departments = Department.all
   @project = @employee.project ? @employee.project.name : "none"
-  # @projects = Project.all
+  @projects = Project.all
   erb :employee
 end
 
@@ -75,6 +75,7 @@ patch '/employee/department/:id' do
   # @project = @employee.project.name
   # @projects = Project.all
   @departments = Department.all
+  @projects = Project.all
   @department = @employee.department ? @employee.department.name : "none"
   @project = @employee.project ? @employee.project.name : "none"
   erb :employee
@@ -127,14 +128,13 @@ patch '/project/:id/add_employees' do
   erb :project_details
 end
 
-# patch '/employee/project/:id' do
-#   @employee = Employee.find(params.fetch 'id')
-#   project = params.fetch 'project-id'
-#   @employee.update({project_id: project})
-#   @project = @employee.project.name
-#   @projects = Project.all
-#   @departments = Department.all
-#   @department = @employee.department.name
-#
-#   erb :employee
-# end
+patch '/employee/project/:id' do
+  @employee = Employee.find(params.fetch 'id')
+  project_id = params.fetch 'project-id'
+  @employee.update({project_id: project_id})
+  @project = @employee.project.name
+  @department = @employee.department ? @employee.department.name : "none"
+  @projects = Project.all
+  @departments = Department.all
+  erb :employee
+end
