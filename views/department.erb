@@ -1,16 +1,30 @@
 <h3><em><%= @department.name %></em></h3>
 <br>
-<form action="/department/update/<%= @department.id %>" method="post">
-  <input name="_method" type="hidden" value="patch">
-  <label>update name:</label>
-  <input name="department-name" type="text">
-  <br>
-  <button type="submit" class="btn btn-info" name="button">update department</button>
-</form>
-<br>
-<form action="/department/delete/<%= @department.id %>" method="post">
-  <input name="_method" type="hidden" value="delete">
-  <button type="submit" class="btn btn-warning" name="button">delete department</button>
-</form>
-<br>
-<a href="/" class="btn btn-success">home</a>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form action="/department/update/<%= @department.id %>" method="post">
+        <input name="_method" type="hidden" value="patch">
+        <label>update name:</label>
+        <input name="department-name" type="text">
+        <br>
+        <button type="submit" class="btn btn-info" name="button">update department</button>
+      </form>
+      <br>
+      <form action="/department/delete/<%= @department.id %>" method="post">
+        <input name="_method" type="hidden" value="delete">
+        <button type="submit" class="btn btn-warning" name="button">delete department</button>
+      </form>
+      <br>
+      <a href="/" class="btn btn-success">home</a>
+    </div>
+    <div class="col-md-6">
+      <h3>Employees:</h3>
+      <% if @department.employees.any? %>
+        <% @department.employees.each do |employee| %>
+        <li><%= employee.name %></li>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
